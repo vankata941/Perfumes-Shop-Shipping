@@ -5,6 +5,9 @@ import com.softuni.perfumes_shop_shipping.model.dto.outbound.ViewShippingDetailD
 import com.softuni.perfumes_shop_shipping.service.ShippingDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -19,7 +22,16 @@ public class ShippingController {
 
     @PostMapping("/create")
     public ResponseEntity<ViewShippingDetailDTO> createShipping(
-            @RequestBody ShippingDetailDTO shippingDetailDTO) {
+            @RequestBody ShippingDetailDTO shippingDetailDTO, @AuthenticationPrincipal UserDetails userDetails) {
+
+        if (userDetails
+                .getAuthorities()
+                .stream()
+                .map(GrantedAuthority::getAuthority)
+                .noneMatch("ROLE_ADMIN"::equals)
+        ) {
+            return ResponseEntity.noContent().build();
+        }
 
         ViewShippingDetailDTO viewShippingDetailDTO =
                 shippingDetailService.createShippingDetail(shippingDetailDTO);
@@ -34,9 +46,17 @@ public class ShippingController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<ViewShippingDetailDTO>> getAllShippingDetails() {
-
+    public ResponseEntity<List<ViewShippingDetailDTO>> getAllShippingDetails(
+            @AuthenticationPrincipal UserDetails userDetails
+            ) {
+        if (userDetails
+                .getAuthorities()
+                .stream()
+                .map(GrantedAuthority::getAuthority)
+                .noneMatch("ROLE_ADMIN"::equals)
+        ) {
+            return ResponseEntity.noContent().build();
+        }
         return ResponseEntity.ok(shippingDetailService.getAllDetails());
     }
-
 }
