@@ -20,7 +20,11 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
-                        authorize -> authorize.anyRequest().authenticated()
+                        authorize -> authorize
+                                .requestMatchers("/shipping/status")
+                                .permitAll()
+                                .anyRequest()
+                                .authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter , UsernamePasswordAuthenticationFilter.class)
                 .build();

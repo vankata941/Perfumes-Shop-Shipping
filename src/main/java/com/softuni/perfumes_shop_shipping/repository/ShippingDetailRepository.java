@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ShippingDetailRepository extends JpaRepository<ShippingDetail, Long> {
+
+    void deleteByOrderId(Long id);
 }

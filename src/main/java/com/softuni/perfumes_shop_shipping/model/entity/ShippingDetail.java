@@ -36,6 +36,6 @@ public class ShippingDetail {
     @Column(nullable = false)
     private String orderCreatedDate;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
     private ShippingAddress shippingAddress;
 }

@@ -33,6 +33,9 @@ logging:
 server:
   port: 8081
 
+shipping:
+  api:
+    key: ${SHIPPING_KEY:567}
 
 jwt:
   secret: ${JWT_KEY:LuSKCYKrjCsc1blrhRKpWNbWUP1wzNfS5a6DX4hS6MIKN3e8KYLuSKCYKrjCsc1blrhRKpWNbWUP1wzNfS5a6DX4hS6MIKN3e8KY}
